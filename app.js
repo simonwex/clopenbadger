@@ -109,4 +109,11 @@ app.post('/v1/user/mark-all-badges-as-read',
          [api.auth],
          api.markAllBadgesAsRead);
 
-module.exports = app;
+var server = module.exports = http.createServer(app);
+
+console.log('Environment: \n' + util.inspect(app.env.all()));
+if (!module.parent) {
+  server.listen(app.env.get('port'), function () {
+    app.logger.info("Express server listening on port " + app.env.get('port'));
+  });
+}
